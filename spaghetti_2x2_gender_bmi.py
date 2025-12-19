@@ -39,7 +39,7 @@ for ax, (gender, bmi_group) in zip(axes.flat, groups):
 
     colors = plt.cm.tab20(np.linspace(0, 1, max(n, 1)))
     for i, (_, row) in enumerate(ratings.iterrows()):
-        ax.plot(time_hours, row.values,
+        ax.plot(time_hours, row.values / 10.0,
                 color=colors[i % len(colors)],
                 alpha=0.5)
 

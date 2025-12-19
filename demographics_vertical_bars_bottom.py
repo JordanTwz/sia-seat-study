@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "Arial"
-plt.rcParams["font.size"] = 14
+plt.rcParams["font.size"] = 16
 
 DF_ALL_PATH  = "df_ratings_all (2).xlsx"   # has Age/Height/Weight/BMI + Gender
 DF_MELT_PATH = "df_ratings_melt.xlsx"      # has subject, Gender, past_flights, sitting_duration
@@ -78,6 +78,7 @@ for row_idx, metric in enumerate(metrics):
             ax.set_xlabel(f'{metric} {unit_map.get(metric, "")}')
             ax.set_ylabel('Count')
 
+        ax.grid(True, axis='y', linestyle='--', alpha=0.4)
         ax.set_title(f'{metric} ({gender})')
 
 

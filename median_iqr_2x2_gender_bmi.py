@@ -37,9 +37,9 @@ for ax, (gender, bmi_group) in zip(axes.flat, groups):
     data = subset[rating_columns].to_numpy(float)
     n = data.shape[0]
 
-    median = np.nanmedian(data, axis=0)
-    q1 = np.nanpercentile(data, 25, axis=0)
-    q3 = np.nanpercentile(data, 75, axis=0)
+    median = np.nanmedian(data, axis=0) / 10.0
+    q1 = np.nanpercentile(data, 25, axis=0) / 10.0
+    q3 = np.nanpercentile(data, 75, axis=0) / 10.0
 
     ax.fill_between(time_hours, q1, q3, color="lightblue", alpha=0.4)
     ax.plot(time_hours, median, color="tab:blue", linewidth=2.5)
