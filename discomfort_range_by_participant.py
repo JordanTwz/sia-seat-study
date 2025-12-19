@@ -7,10 +7,10 @@ plt.rcParams["font.size"] = 14
 file_path = "df_ratings_all (2).xlsx"
 df = pd.read_excel(file_path, sheet_name="df_ratings_all")
 
-# Compute min/max per participant from rating columns
+# Compute min/max per participant from rating columns (scale to 0-10)
 rating_columns = [c for c in df.columns if c.startswith("rating")]
-df["min"] = df[rating_columns].min(axis=1)
-df["max"] = df[rating_columns].max(axis=1)
+df["min"] = df[rating_columns].min(axis=1) / 10.0
+df["max"] = df[rating_columns].max(axis=1) / 10.0
 
 # Sort by maximum discomfort
 df_sorted = df.sort_values(by="max", ascending=False).reset_index(drop=True)
@@ -27,8 +27,8 @@ for idx, row in df_sorted.iterrows():
 
 # Axis styling (axes a different color than lines)
 ax.set_xlim(-0.5, len(df_sorted) - 0.5)
-ax.set_ylim(5, 80)
-ax.set_yticks([5, 10, 20, 30, 40, 50, 60, 70, 80])
+ax.set_ylim(0.5, 8)
+ax.set_yticks([0.5, 1, 2, 3, 4, 5, 6, 7, 8])
 ax.tick_params(axis='x', colors='black')
 ax.tick_params(axis='y', colors='black')
 ax.set_xlabel('Participant Number (ranked by maximum discomfort)', fontsize=18, color='black')

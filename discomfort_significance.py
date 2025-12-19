@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "Arial"
-plt.rcParams["font.size"] = 14
+plt.rcParams["font.size"] = 16
 
 # Load data
 df = pd.read_excel('df_ratings_all (2).xlsx')
@@ -24,14 +24,17 @@ dip_indices = {7: 0.1, 13: 0.1}
 arrowprops = dict(arrowstyle='->', color='black', linewidth=1.6, shrinkA=0, shrinkB=0)
 
 # Journal font sizes
-TITLE_FONTSIZE = 20
-LABEL_FONTSIZE = 18
-TICK_FONTSIZE = 16
-ANNOT_FONTSIZE = 16
+TITLE_FONTSIZE = 25
+LABEL_FONTSIZE = 23
+TICK_FONTSIZE = 21
+ANNOT_FONTSIZE = 21
 
 # --- Split groups ---
-sig_pos = df[(df['significant'] == True) & (df['slope_hour'] > 0)]
-sig_other = df[~((df['significant'] == True) & (df['slope_hour'] > 0))]
+df_scaled = df.copy()
+df_scaled[rating_cols] = df_scaled[rating_cols] / 10.0
+
+sig_pos = df_scaled[(df_scaled['significant'] == True) & (df_scaled['slope_hour'] > 0)]
+sig_other = df_scaled[~((df_scaled['significant'] == True) & (df_scaled['slope_hour'] > 0))]
 
 avg_pos = sig_pos[rating_cols].mean(axis=0)
 avg_other = sig_other[rating_cols].mean(axis=0)
@@ -50,7 +53,7 @@ for idx, shift in dip_indices.items():
     axes[0].annotate(
         "Dip due to toilet break", 
         xy=(xi, yi), 
-        xytext=(xi, yi + 7),
+        xytext=(xi, yi + 0.7),
         ha='center',
         fontsize=ANNOT_FONTSIZE,
         arrowprops=arrowprops
@@ -74,7 +77,7 @@ for idx, shift in dip_indices.items():
     axes[1].annotate(
         "Dip due to toilet break", 
         xy=(xi, yi), 
-        xytext=(xi, yi + 7),
+        xytext=(xi, yi + 0.7),
         ha='center',
         fontsize=ANNOT_FONTSIZE,
         arrowprops=arrowprops

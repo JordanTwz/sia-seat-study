@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import statsmodels.api as sm
 plt.rcParams["font.family"] = "Arial"
 plt.rcParams["font.size"] = 18
-plt.rcParams["axes.titlesize"] = 18
+plt.rcParams["axes.titlesize"] = 21
 plt.rcParams["axes.labelsize"] = 16
 plt.rcParams["xtick.labelsize"] = 14
 plt.rcParams["ytick.labelsize"] = 14

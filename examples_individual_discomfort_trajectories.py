@@ -44,12 +44,13 @@ colours = {
 # Generate figure
 plt.figure(figsize=(10,7))
 for label, row in examples.items():
-    ratings = row[rating_cols_no_breaks].values.flatten()
+    ratings = row[rating_cols_no_breaks].values.flatten() / 10.0
+    legend_slope = row['slope_hour'].values[0] / 10.0
     plt.plot(timestamps_hours, ratings, 'o-', color=colours[label],
-             label=f"{label} (slope={row['slope_hour'].values[0]:.2f}/hr)")
+             label=f"{label} (slope = {legend_slope:.2f}/hr)")
     
-    slope = row['slope_hour'].values[0]
-    intercept = row['intercept'].values[0]
+    slope = row['slope_hour'].values[0] / 10.0
+    intercept = row['intercept'].values[0] / 10.0
     plt.plot(timestamps_hours, slope*np.array(timestamps_hours) + intercept, '--',
              color=colours[label], alpha=0.8)
 
