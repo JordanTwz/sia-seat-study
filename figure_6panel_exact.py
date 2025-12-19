@@ -3,7 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 plt.rcParams["font.family"] = "Arial"
-plt.rcParams["font.size"] = 14
+plt.rcParams["font.size"] = 18
+plt.rcParams["axes.titlesize"] = 18
+plt.rcParams["axes.labelsize"] = 16
+plt.rcParams["xtick.labelsize"] = 14
+plt.rcParams["ytick.labelsize"] = 14
 
 # Load data
 df_core = pd.read_excel("df_ratings_all (2).xlsx", sheet_name="df_ratings_all")
