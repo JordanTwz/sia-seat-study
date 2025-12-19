@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Arial"
+plt.rcParams["font.size"] = 14
 
 # Load fresh upload
 file_path = "df_ratings_all (2).xlsx"
@@ -35,11 +37,11 @@ x2, y2 = time_hours[13], float(median[13])
 
 plt.annotate("Dip due to toilet break", xy=(x1, y1+0.3), xytext=(x1, y1+11),
              arrowprops=dict(arrowstyle='-|>', lw=1.3, color='black'),
-             ha='center', va='bottom', fontsize=10)
+             ha='center', va='bottom', fontsize=14)
 
 plt.annotate("Dip due to toilet break", xy=(x2, y2+0.3), xytext=(x2, y2+11),
              arrowprops=dict(arrowstyle='-|>', lw=1.3, color='black'),
-             ha='center', va='bottom', fontsize=10)
+             ha='center', va='bottom', fontsize=14)
 
 plt.title(f"Average Discomfort Rating (n={n})")
 plt.xlabel("Time (hours)")

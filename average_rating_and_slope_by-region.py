@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Arial"
+plt.rcParams["font.size"] = 14
 
 CSV_PATH = "df_ratings_all_raw(in).csv"   # update if needed
 df = pd.read_csv(CSV_PATH)
@@ -80,45 +82,41 @@ medianprops = dict(color="black", linewidth=2)
 whiskerprops= dict(color="black")
 capprops    = dict(color="black")
 
-# ---- Plot 1: Average Rating by Region (SVG) ----
-plt.figure(figsize=(8,5))
-plt.boxplot([avg_by_subj[c].dropna().values for c in order],
-            labels=order, showfliers=True,
-            boxprops=boxprops, medianprops=medianprops,
-            whiskerprops=whiskerprops, capprops=capprops)
+# ---- Combined figure: Average Rating + Slope by Region (SVG) ----
+fig, axes = plt.subplots(1, 2, figsize=(16, 5))
+
+axes[0].boxplot([avg_by_subj[c].dropna().values for c in order],
+                labels=order, showfliers=True,
+                boxprops=boxprops, medianprops=medianprops,
+                whiskerprops=whiskerprops, capprops=capprops)
 for i, c in enumerate(order, start=1):
     y = avg_by_subj[c].dropna().values
     x = np.random.normal(i, 0.05, size=len(y))
-    plt.scatter(x, y, s=10, alpha=0.7, c="lightgray", edgecolors="none")
-    plt.scatter(i, y.mean(), marker="D", s=30, c="black")
-plt.ylabel("Average Rating (0–10)")
-plt.title("Average Rating by Region")
-plt.xticks(rotation=30, ha="right")
-plt.grid(False)
-plt.tight_layout()
-plt.savefig("average_rating_by_region_n152_bw.svg", format="svg", bbox_inches="tight")
-plt.close()
+    axes[0].scatter(x, y, s=10, alpha=0.7, c="lightgray", edgecolors="none")
+    axes[0].scatter(i, y.mean(), marker="D", s=30, c="black")
+axes[0].set_ylabel("Average Rating (0-10)")
+axes[0].set_title("Average Rating by Region")
+axes[0].set_xticklabels(order, rotation=30, ha="right")
+axes[0].grid(False)
 
-# ---- Plot 2: Slope by Region (per hour, SVG) ----
-plt.figure(figsize=(8,5))
-plt.boxplot([slopes_hour[c].dropna().values for c in order],
-            labels=order, showfliers=True,
-            boxprops=boxprops, medianprops=medianprops,
-            whiskerprops=whiskerprops, capprops=capprops)
+axes[1].boxplot([slopes_hour[c].dropna().values for c in order],
+                labels=order, showfliers=True,
+                boxprops=boxprops, medianprops=medianprops,
+                whiskerprops=whiskerprops, capprops=capprops)
 for i, c in enumerate(order, start=1):
     y = slopes_hour[c].dropna().values
     x = np.random.normal(i, 0.05, size=len(y))
-    plt.scatter(x, y, s=10, alpha=0.7, c="lightgray", edgecolors="none")
-    plt.scatter(i, y.mean(), marker="D", s=30, c="black")
-plt.axhline(0, color="lightgray", linewidth=1)  # zero reference line
-plt.ylabel("Slope (rating per hour)")
-plt.title("Slope by Region")
-plt.xticks(rotation=30, ha="right")
-plt.grid(False)
-plt.tight_layout()
-plt.savefig("slope_by_region_n152_per-hour_bw.svg", format="svg", bbox_inches="tight")
-plt.close()
+    axes[1].scatter(x, y, s=10, alpha=0.7, c="lightgray", edgecolors="none")
+    axes[1].scatter(i, y.mean(), marker="D", s=30, c="black")
+axes[1].axhline(0, color="lightgray", linewidth=1)  # zero reference line
+axes[1].set_ylabel("Slope (rating per hour)")
+axes[1].set_title("Slope by Region")
+axes[1].set_xticklabels(order, rotation=30, ha="right")
+axes[1].grid(False)
 
-print("Saved SVGs to :",
-      "average_rating_by_region_n152_bw.svg",
-      "slope_by_region_n152_per-hour_bw.svg", sep="\n")
+plt.tight_layout()
+out_svg = "average_rating_and_slope_by_region_n152_bw.svg"
+plt.savefig(out_svg, format="svg", bbox_inches="tight")
+plt.close(fig)
+
+print("Saved SVG to :", out_svg)

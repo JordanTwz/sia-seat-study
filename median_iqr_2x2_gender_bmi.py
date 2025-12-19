@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Arial"
+plt.rcParams["font.size"] = 14
 
 # Load data
 df = pd.read_excel("df_ratings_all (2).xlsx")
@@ -28,7 +30,7 @@ groups = [
 ]
 
 # Create 2x2 figure
-fig, axes = plt.subplots(2, 2, figsize=(12, 8), sharey=True)
+fig, axes = plt.subplots(2, 2, figsize=(14, 8), sharey=True)
 
 for ax, (gender, bmi_group) in zip(axes.flat, groups):
     subset = df[(df["Gender"] == gender) & (df["BMI_group"] == bmi_group)]
@@ -42,7 +44,7 @@ for ax, (gender, bmi_group) in zip(axes.flat, groups):
     ax.fill_between(time_hours, q1, q3, color="lightblue", alpha=0.4)
     ax.plot(time_hours, median, color="tab:blue", linewidth=2.5)
 
-    ax.set_title(f"{gender} - {bmi_group} (n={n})")
+    ax.set_title(f"{gender} - {bmi_group} (n = {n})")
     ax.set_xticks(time_hours)
     ax.set_xticklabels(time_labels, rotation=45)
     ax.grid(True, alpha=0.3)

@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Arial"
+plt.rcParams["font.size"] = 14
 
 # Load data
 df = pd.read_excel('df_ratings_all (2).xlsx')
@@ -22,10 +24,10 @@ dip_indices = {7: 0.1, 13: 0.1}
 arrowprops = dict(arrowstyle='->', color='black', linewidth=1.6, shrinkA=0, shrinkB=0)
 
 # Journal font sizes
-TITLE_FONTSIZE = 16
-LABEL_FONTSIZE = 14
-TICK_FONTSIZE = 12
-ANNOT_FONTSIZE = 12
+TITLE_FONTSIZE = 20
+LABEL_FONTSIZE = 18
+TICK_FONTSIZE = 16
+ANNOT_FONTSIZE = 16
 
 # --- Split groups ---
 sig_pos = df[(df['significant'] == True) & (df['slope_hour'] > 0)]

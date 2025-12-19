@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Arial"
+plt.rcParams["font.size"] = 14
 import matplotlib.dates as mdates
 from datetime import datetime, timedelta
 
@@ -46,20 +48,20 @@ for label, t_str in events:
     ax.plot(t, 0, "o", color="black", markersize=6, zorder=3)
     ax.vlines(t, 0, 1.0, color="black", linestyle="--", linewidth=0.8)
     ax.text(t, 1.2, label, ha="center", va="center",
-            fontsize=9, bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="black"))
+            fontsize=13, bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="black"))
 
 # Add discomfort rating indicators (primary DV)
 ax.plot(rating_times, [0]*len(rating_times), "o", color="crimson", markersize=4, label="Discomfort Ratings", zorder=2)
 
 # Add label for discomfort ratings (below the line)
 ax.text(start_time + timedelta(minutes=60), -0.5, "Discomfort Ratings (every 20 min)",
-        ha="left", va="center", fontsize=9, color="crimson")
+        ha="left", va="center", fontsize=13, color="crimson")
 
 # Format x-axis
 ax.xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
 ax.set_ylim(-0.8, 1.5)
 ax.set_yticks([])
-ax.set_title("Experimental Protocol Timeline", fontsize=12)
+ax.set_title("Experimental Protocol Timeline", fontsize=16)
 ax.set_xlabel("Time")
 
 # Clean frame

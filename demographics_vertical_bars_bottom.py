@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Arial"
+plt.rcParams["font.size"] = 14
 
 DF_ALL_PATH  = "df_ratings_all (2).xlsx"   # has Age/Height/Weight/BMI + Gender
 DF_MELT_PATH = "df_ratings_melt.xlsx"      # has subject, Gender, past_flights, sitting_duration

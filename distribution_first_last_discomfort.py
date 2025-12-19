@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Arial"
+plt.rcParams["font.size"] = 14
 
 # Load data
 df = pd.read_excel('df_ratings_all (2).xlsx')
@@ -28,9 +30,9 @@ ax.hist(last, bins=bins, color='tab:red', edgecolor='black',
 ax.axvline(median_last, color='tab:red', linestyle='--',
            linewidth=2, label=f'Median Last = {median_last}')
 
-ax.set_title('Distribution of First and Last Discomfort Ratings (n = 208)', fontsize=16)
-ax.set_xlabel('Discomfort Rating', fontsize=12)
-ax.set_ylabel('Number of Participants', fontsize=12)
+ax.set_title('Distribution of First and Last Discomfort Ratings (n = 208)', fontsize=20)
+ax.set_xlabel('Discomfort Rating', fontsize=16)
+ax.set_ylabel('Number of Participants', fontsize=16)
 
 ax.set_xticks(np.arange(10, 81, 5))
 ax.set_xlim(8, 82)
