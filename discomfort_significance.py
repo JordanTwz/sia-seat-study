@@ -42,7 +42,7 @@ fig, axes = plt.subplots(1, 2, figsize=(22, 9), sharey=True)
 # ---- LEFT PANEL: significant ↑ ----
 for _, row in sig_pos.iterrows():
     axes[0].plot(x, row[rating_cols], color='gray', linewidth=1, alpha=0.3)
-axes[0].plot(x, avg_pos, color='green', linewidth=3)
+axes[0].plot(x, avg_pos, color='green', linewidth=3, label='Average')
 
 for idx, shift in dip_indices.items():
     xi = x[idx] + shift
@@ -56,7 +56,8 @@ for idx, shift in dip_indices.items():
         arrowprops=arrowprops
     )
 
-axes[0].set_title("Subjects with Statistically Significant Increase", fontsize=TITLE_FONTSIZE)
+axes[0].legend(frameon=False, fontsize=TICK_FONTSIZE)
+axes[0].set_title("Subjects with Statistically Significant Increase (n = 152)", fontsize=TITLE_FONTSIZE)
 axes[0].set_ylabel("Discomfort rating", fontsize=LABEL_FONTSIZE)
 axes[0].tick_params(axis='both', labelsize=TICK_FONTSIZE)
 axes[0].set_xticks(x)
@@ -65,7 +66,7 @@ axes[0].set_xticklabels(timestamps, rotation=45, fontsize=TICK_FONTSIZE)
 # ---- RIGHT PANEL: non-significant/↓ ----
 for _, row in sig_other.iterrows():
     axes[1].plot(x, row[rating_cols], color='gray', linewidth=1, alpha=0.3)
-axes[1].plot(x, avg_other, color='red', linewidth=3)
+axes[1].plot(x, avg_other, color='red', linewidth=3, label='Average')
 
 for idx, shift in dip_indices.items():
     xi = x[idx] + shift
@@ -79,14 +80,15 @@ for idx, shift in dip_indices.items():
         arrowprops=arrowprops
     )
 
-axes[1].set_title("Subjects with Non-Significant or Decreasing Discomfort", fontsize=TITLE_FONTSIZE)
+axes[1].legend(frameon=False, fontsize=TICK_FONTSIZE)
+axes[1].set_title("Subjects with Non-Significant or Decreasing Discomfort (n = 56)", fontsize=TITLE_FONTSIZE)
 axes[1].tick_params(axis='both', labelsize=TICK_FONTSIZE)
 axes[1].set_xticks(x)
 axes[1].set_xticklabels(timestamps, rotation=45, fontsize=TICK_FONTSIZE)
 
 plt.tight_layout()
 
-svg_path = "discomfort_significance_journal.svg"
+svg_path = "discomfort_significance.svg"
 plt.savefig(svg_path, format="svg")
 plt.close(fig)
 
