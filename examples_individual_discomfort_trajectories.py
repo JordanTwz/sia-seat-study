@@ -13,18 +13,15 @@ timepoints = [col for col in data.columns if col.startswith('rating') and col[6:
 
 # Custom timestamps
 timestamps_str = ["0:00", "0:20", "0:40", "1:00", "1:20", "1:40", "2:00",
-                  "2:25", "2:45", "3:05", "3:25", "3:45", "4:05", "4:30",
-                  "4:50", "5:10", "5:30", "5:50", "6:10"]
+                  "2:05", "2:25", "2:45", "3:05", "3:25", "3:45", "4:05",
+                  "4:10", "4:30", "4:50", "5:10", "5:30", "5:50", "6:10"]
 
 timestamps_hours = []
 for t in timestamps_str:
     minutes = int(t.split(":")[0]) * 60 + int(t.split(":")[1])
     timestamps_hours.append(minutes / 60)
 
-# Remove tea break ratings: rating8, rating14
-rating_cols_no_breaks = timepoints.copy()
-rating_cols_no_breaks.pop(7)   # rating8
-rating_cols_no_breaks.pop(13)  # rating14
+x_positions = np.arange(len(timestamps_str))
 
 # Select representative examples
 examples = {}
@@ -44,17 +41,20 @@ colours = {
 # Generate figure
 plt.figure(figsize=(10,7))
 for label, row in examples.items():
-    ratings = row[rating_cols_no_breaks].values.flatten() / 10.0
+    ratings = row[timepoints].values.flatten() / 10.0
     legend_slope = row['slope_hour'].values[0] / 10.0
-    plt.plot(timestamps_hours, ratings, 'o-', color=colours[label],
+    plt.plot(x_positions, ratings, 'o-', color=colours[label],
              label=f"{label} (slope = {legend_slope:.2f}/hr)")
     
     slope = row['slope_hour'].values[0] / 10.0
     intercept = row['intercept'].values[0] / 10.0
-    plt.plot(timestamps_hours, slope*np.array(timestamps_hours) + intercept, '--',
+    y_start = slope * timestamps_hours[0] + intercept
+    y_end = slope * timestamps_hours[-1] + intercept
+    y_line = np.linspace(y_start, y_end, len(x_positions))
+    plt.plot(x_positions, y_line, '--',
              color=colours[label], alpha=0.8)
 
-plt.xticks(timestamps_hours, timestamps_str, rotation=45)
+plt.xticks(x_positions, timestamps_str, rotation=45)
 plt.xlabel('Time')
 plt.ylabel('Discomfort Rating')
 plt.title('Examples of Individual Discomfort Trajectories')
