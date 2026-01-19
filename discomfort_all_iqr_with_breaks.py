@@ -8,16 +8,15 @@ plt.rcParams["font.size"] = 14
 file_path = "df_ratings_all (2).xlsx"
 df = pd.read_excel(file_path)
 
-# Rating columns excluding tea breaks (index 8 = rating9, index 14 = rating15)
-rating_cols_all = [c for c in df.columns if c.startswith("rating")]
-rating_columns = [col for i, col in enumerate(rating_cols_all) if i not in [8, 14]]
+# Rating columns including tea breaks
+rating_columns = [c for c in df.columns if c.startswith("rating")]
 
 # Time points
-time_points = np.array([0,20,40,60,80,100,120,145,165,185,205,225,245,270,290,310,330,350,370])
-time_hours = time_points/60
+time_points = np.array([0,20,40,60,80,100,120,125,145,165,185,205,225,245,250,270,290,310,330,350,370])
+time_hours = np.arange(len(time_points))
 time_labels = ["0:00","0:20","0:40","1:00","1:20","1:40","2:00",
-               "2:25","2:45","3:05","3:25","3:45","4:05",
-               "4:30","4:50","5:10","5:30","5:50","6:10"]
+               "2:05","2:25","2:45","3:05","3:25","3:45","4:05",
+               "4:10","4:30","4:50","5:10","5:30","5:50","6:10"]
 
 # Median & IQR (scale ratings to 0-10)
 ratings = df[rating_columns].to_numpy(float) / 10.0
@@ -31,9 +30,9 @@ plt.figure(figsize=(8,6))
 plt.fill_between(time_hours, q1, q3, color='lightblue', alpha=0.4)
 plt.plot(time_hours, median, color='tab:blue', linewidth=2.5)
 
-# Arrow positions for 2:25 (index 7) and 4:30 (index 13), higher arrows
+# Arrow positions for 2:05 (index 7) and 4:10 (index 14), higher arrows
 x1, y1 = time_hours[7], float(median[7])
-x2, y2 = time_hours[13], float(median[13])
+x2, y2 = time_hours[14], float(median[14])
 
 plt.annotate("Dip due to toilet break", xy=(x1, y1+0.3), xytext=(x1, y1+1.1),
              arrowprops=dict(arrowstyle='-|>', lw=1.3, color='black'),
