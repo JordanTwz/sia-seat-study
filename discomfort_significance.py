@@ -7,20 +7,20 @@ plt.rcParams["font.size"] = 16
 # Load data
 df = pd.read_excel('df_ratings_all (2).xlsx')
 
-# Define rating columns excluding tea-breaks
+# Define rating columns including tea-breaks
 all_ratings = [f"rating{i}" for i in range(1, 22)]
-rating_cols = [r for r in all_ratings if r not in ('rating8', 'rating15')]
+rating_cols = all_ratings
 
 # Custom timestamps
 timestamps = [
     "0:00", "0:20", "0:40", "1:00", "1:20", "1:40", "2:00",
-    "2:25", "2:45", "3:05", "3:25", "3:45", "4:05", "4:30",
-    "4:50", "5:10", "5:30", "5:50", "6:10"
+    "2:05", "2:25", "2:45", "3:05", "3:25", "3:45", "4:05",
+    "4:10", "4:30", "4:50", "5:10", "5:30", "5:50", "6:10"
 ]
 x = np.arange(len(rating_cols))
 
 # Dip indices
-dip_indices = {7: 0.1, 13: 0.1}
+dip_indices = {7: 0.1, 14: 0.1}
 arrowprops = dict(arrowstyle='->', color='black', linewidth=1.6, shrinkA=0, shrinkB=0)
 
 # Journal font sizes
