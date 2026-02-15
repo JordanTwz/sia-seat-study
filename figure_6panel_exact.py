@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
+from matplotlib.ticker import FuncFormatter
 plt.rcParams["font.family"] = "Arial"
 plt.rcParams["font.size"] = 18
 plt.rcParams["axes.titlesize"] = 21
@@ -76,6 +77,9 @@ sd = dff.copy()
 levels_sd = sorted(sd["sitting_duration"].unique(), key=str)
 sd["sitting_duration"] = pd.Categorical(sd["sitting_duration"], categories=levels_sd, ordered=True)
 box_ax(axes[1,2], sd["sitting_duration"], sd["slope_hour"], "Habitual daily sitting duration", "Discomfort vs Habitual sitting duration", "#d62728")
+
+for ax in axes.flat:
+    ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: f"{y/10:g}"))
 
 plt.tight_layout()
 
