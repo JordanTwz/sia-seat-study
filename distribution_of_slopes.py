@@ -18,16 +18,20 @@ df_clean = df[df['slope_hour'].notna() & df['significant'].notna()]
 slopes_nonsig = df_clean[df_clean['significant'] == False]['slope_hour']
 slopes_sig = df_clean[df_clean['significant'] == True]['slope_hour']
 
+# Divide x-axis values by 10 for plotting
+slopes_nonsig_plot = slopes_nonsig / 10
+slopes_sig_plot = slopes_sig / 10
+
 # Bins
-bins = np.linspace(df_clean['slope_hour'].min(), df_clean['slope_hour'].max(), 20)
+bins = np.linspace((df_clean['slope_hour'] / 10).min(), (df_clean['slope_hour'] / 10).max(), 20)
 
 # Plot
 plt.figure(figsize=(8, 6))
-plt.hist(slopes_nonsig, bins=bins, alpha=0.6, label='Not Significant', color='tab:red', edgecolor='black')
-plt.hist(slopes_sig, bins=bins, alpha=0.6, label='Significant', color='tab:blue', edgecolor='black')
+plt.hist(slopes_nonsig_plot, bins=bins, alpha=0.6, label='Not Significant', color='tab:red', edgecolor='black')
+plt.hist(slopes_sig_plot, bins=bins, alpha=0.6, label='Significant', color='tab:blue', edgecolor='black')
 
 plt.title('Distribution of Slopes')
-plt.xlabel('Discomfort Accumulation Rate (points/hour)')
+plt.xlabel('Discomfort Accumulation Rate (points/hour, divided by 10)')
 plt.ylabel('Frequency')
 plt.legend()
 plt.tight_layout()
