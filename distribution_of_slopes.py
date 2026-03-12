@@ -31,7 +31,7 @@ plt.hist(slopes_nonsig_plot, bins=bins, alpha=0.6, label='Not Significant', colo
 plt.hist(slopes_sig_plot, bins=bins, alpha=0.6, label='Significant', color='tab:blue', edgecolor='black')
 
 plt.title('Distribution of Slopes')
-plt.xlabel('Discomfort Accumulation Rate (points/hour, divided by 10)')
+plt.xlabel('Discomfort Accumulation Rate')
 plt.ylabel('Frequency')
 plt.legend()
 plt.tight_layout()
