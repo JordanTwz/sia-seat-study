@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 def parse_time(time_str):
     return datetime.strptime(time_str, "%H:%M")
 
-# Define key events with times (all above the line)
+# Define key events with times
 events = [
     ("Start protocol\n(CCTV, IFE, GCR timer)", "12:30"),
     ("Break 1 (2h)", "14:30"),
@@ -20,8 +20,6 @@ events = [
 start_time = parse_time("12:30")
 end_time = parse_time("18:40")
 
-# Discomfort rating times taken directly from the reference diagram.
-# Break events remain at 14:30 and 16:35; the red dots follow these values.
 rating_time_strings = [
     "12:50",
     "13:10",
