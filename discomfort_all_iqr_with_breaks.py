@@ -30,18 +30,6 @@ plt.figure(figsize=(8,6))
 plt.fill_between(time_hours, q1, q3, color='lightblue', alpha=0.4)
 plt.plot(time_hours, median, color='tab:blue', linewidth=2.5)
 
-# Arrow positions for 2:05 (index 7) and 4:10 (index 14), higher arrows
-x1, y1 = time_hours[7], float(median[7])
-x2, y2 = time_hours[14], float(median[14])
-
-plt.annotate("Dip due to toilet break", xy=(x1, y1+0.3), xytext=(x1, y1+1.1),
-             arrowprops=dict(arrowstyle='-|>', lw=1.3, color='black'),
-             ha='center', va='bottom', fontsize=14)
-
-plt.annotate("Dip due to toilet break", xy=(x2, y2+0.3), xytext=(x2, y2+1.1),
-             arrowprops=dict(arrowstyle='-|>', lw=1.3, color='black'),
-             ha='center', va='bottom', fontsize=14)
-
 plt.title(f"Average Discomfort Rating (n = {n})")
 plt.xlabel("Time (hours)")
 plt.ylabel("Average Discomfort rating")

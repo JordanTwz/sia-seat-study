@@ -1,11 +1,14 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
 plt.rcParams["font.family"] = "Arial"
 plt.rcParams["font.size"] = 16
 
+BASE_DIR = Path(__file__).resolve().parent
+
 # Load data
-df = pd.read_excel('df_ratings_all (2).xlsx')
+df = pd.read_excel(BASE_DIR / 'df_ratings_all (2).xlsx')
 
 # Define rating columns including tea-breaks
 all_ratings = [f"rating{i}" for i in range(1, 22)]
@@ -19,15 +22,10 @@ timestamps = [
 ]
 x = np.arange(len(rating_cols))
 
-# Dip indices
-dip_indices = {7: 0.1, 14: 0.1}
-arrowprops = dict(arrowstyle='->', color='black', linewidth=1.6, shrinkA=0, shrinkB=0)
-
 # Journal font sizes
 TITLE_FONTSIZE = 25
 LABEL_FONTSIZE = 23
 TICK_FONTSIZE = 21
-ANNOT_FONTSIZE = 21
 
 # --- Split groups ---
 df_scaled = df.copy()
@@ -47,18 +45,6 @@ for _, row in sig_pos.iterrows():
     axes[0].plot(x, row[rating_cols], color='gray', linewidth=1, alpha=0.3)
 axes[0].plot(x, avg_pos, color='green', linewidth=3, label='Average')
 
-for idx, shift in dip_indices.items():
-    xi = x[idx] + shift
-    yi = avg_pos[idx]
-    axes[0].annotate(
-        "Dip due to toilet break", 
-        xy=(xi, yi), 
-        xytext=(xi, yi + 0.7),
-        ha='center',
-        fontsize=ANNOT_FONTSIZE,
-        arrowprops=arrowprops
-    )
-
 axes[0].legend(frameon=False, fontsize=TICK_FONTSIZE)
 axes[0].set_title("Subjects with Statistically Significant Increase (n = 152)", fontsize=TITLE_FONTSIZE)
 axes[0].set_ylabel("Discomfort rating", fontsize=LABEL_FONTSIZE)
@@ -71,18 +57,6 @@ for _, row in sig_other.iterrows():
     axes[1].plot(x, row[rating_cols], color='gray', linewidth=1, alpha=0.3)
 axes[1].plot(x, avg_other, color='red', linewidth=3, label='Average')
 
-for idx, shift in dip_indices.items():
-    xi = x[idx] + shift
-    yi = avg_other[idx]
-    axes[1].annotate(
-        "Dip due to toilet break", 
-        xy=(xi, yi), 
-        xytext=(xi, yi + 0.7),
-        ha='center',
-        fontsize=ANNOT_FONTSIZE,
-        arrowprops=arrowprops
-    )
-
 axes[1].legend(frameon=False, fontsize=TICK_FONTSIZE)
 axes[1].set_title("Subjects with Non-Significant or Decreasing Discomfort (n = 56)", fontsize=TITLE_FONTSIZE)
 axes[1].tick_params(axis='both', labelsize=TICK_FONTSIZE)
@@ -91,8 +65,8 @@ axes[1].set_xticklabels(timestamps, rotation=45, fontsize=TICK_FONTSIZE)
 
 plt.tight_layout()
 
-svg_path = "discomfort_significance.svg"
+svg_path = BASE_DIR / "discomfort_significance.svg"
 plt.savefig(svg_path, format="svg")
 plt.close(fig)
 
-svg_path
+print(svg_path)
