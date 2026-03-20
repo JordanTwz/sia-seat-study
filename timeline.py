@@ -4,37 +4,51 @@ plt.rcParams["font.size"] = 14
 import matplotlib.dates as mdates
 from datetime import datetime, timedelta
 
+
+def parse_time(time_str):
+    return datetime.strptime(time_str, "%H:%M")
+
 # Define key events with times (all above the line)
 events = [
-    ("Start protocol\n(CCTV, IFE, GCR timer)", "2025-10-01 12:30"),
-    ("Break 1 (2h)", "2025-10-01 14:30"),
-    ("Break 2 (4h 05m)", "2025-10-01 16:50"),  # align exactly with a 20-min interval
-    ("Session end\n(Final entry, stop devices)", "2025-10-01 18:40")
+    ("Start protocol\n(CCTV, IFE, GCR timer)", "12:30"),
+    ("Break 1 (2h)", "14:30"),
+    ("Break 2 (4h 05m)", "16:35"),
+    ("Session end\n(Final entry, stop devices)", "18:40")
 ]
 
 # Convert to datetime objects
-start_time = datetime.strptime("2025-10-01 12:30", "%Y-%m-%d %H:%M")
-end_time = datetime.strptime("2025-10-01 18:40", "%Y-%m-%d %H:%M")
+start_time = parse_time("12:30")
+end_time = parse_time("18:40")
 
-# Define break intervals (5 min duration each)
-breaks = [
-    (datetime.strptime("2025-10-01 14:30", "%Y-%m-%d %H:%M"),
-     datetime.strptime("2025-10-01 14:35", "%Y-%m-%d %H:%M")),
-    (datetime.strptime("2025-10-01 16:35", "%Y-%m-%d %H:%M"),
-     datetime.strptime("2025-10-01 16:40", "%Y-%m-%d %H:%M"))
+# Discomfort rating times taken directly from the reference diagram.
+# Break events remain at 14:30 and 16:35; the red dots follow these values.
+rating_time_strings = [
+    "12:50",
+    "13:10",
+    "13:30",
+    "13:50",
+    "14:10",
+    "14:35",
+    "14:55",
+    "15:15",
+    "15:35",
+    "15:55",
+    "16:15",
+    "16:40",
+    "17:00",
+    "17:20",
+    "17:40",
+    "18:00",
+    "18:20",
 ]
+rating_times = [parse_time(t) for t in rating_time_strings]
 
-# Generate discomfort rating intervals every 20 minutes (excluding breaks)
-rating_times = []
-t = start_time + timedelta(minutes=20)
-while t <= end_time:
-    if not any(b[0] <= t <= b[1] for b in breaks):
-        rating_times.append(t)
-    t += timedelta(minutes=20)
 
-# Find the nearest discomfort time for Break 2 (so it's exactly aligned)
-break2_time = min(rating_times, key=lambda x: abs(x - datetime.strptime("2025-10-01 16:35", "%Y-%m-%d %H:%M")))
-events[2] = ("Break 2 (4h 05m)", break2_time.strftime("%Y-%m-%d %H:%M"))
+def format_elapsed_label(t):
+    elapsed = t - start_time
+    total_minutes = int(elapsed.total_seconds() // 60)
+    hours, minutes = divmod(total_minutes, 60)
+    return f"{hours}:{minutes:02d}"
 
 # Plot setup
 fig, ax = plt.subplots(figsize=(12, 3))
@@ -44,29 +58,63 @@ ax.hlines(0, start_time, end_time, color="black", linewidth=1.5)
 
 # Add main events (all above the line)
 for label, t_str in events:
-    t = datetime.strptime(t_str, "%Y-%m-%d %H:%M")
+    t = parse_time(t_str)
     ax.plot(t, 0, "o", color="black", markersize=6, zorder=3)
     ax.vlines(t, 0, 1.0, color="black", linestyle="--", linewidth=0.8)
     ax.text(t, 1.2, label, ha="center", va="center",
             fontsize=13, bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="black"))
 
+# Label the first and last black dots with elapsed timestamps.
+for t in (start_time, end_time):
+    ax.text(
+        t,
+        -0.16,
+        format_elapsed_label(t),
+        ha="center",
+        va="top",
+        fontsize=11,
+        color="black",
+    )
+
 # Add discomfort rating indicators (primary DV)
 ax.plot(rating_times, [0]*len(rating_times), "o", color="crimson", markersize=4, label="Discomfort Ratings", zorder=2)
 
+# Label each red dot with its elapsed timestamp.
+for t in rating_times:
+    ax.text(
+        t,
+        -0.16,
+        format_elapsed_label(t),
+        ha="center",
+        va="top",
+        fontsize=11,
+        color="black",
+    )
+
 # Add label for discomfort ratings (below the line)
-ax.text(start_time + timedelta(minutes=60), -0.5, "Discomfort Ratings (every 20 min)",
-        ha="left", va="center", fontsize=13, color="crimson")
+ax.text(
+    start_time + timedelta(minutes=10),
+    -0.55,
+    "Discomfort ratings (every 20 minutes)\nA total of 21 ratings per participant",
+    ha="left",
+    va="top",
+    fontsize=13,
+    color="crimson",
+)
 
 # Format x-axis
 ax.xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
+ax.spines["bottom"].set_position(("outward", 24))
+ax.tick_params(axis="x", pad=8)
 ax.set_ylim(-0.8, 1.5)
 ax.set_yticks([])
-ax.set_title("Experimental Protocol Timeline", fontsize=16)
-ax.set_xlabel("Time")
+ax.set_title("Experimental Protocol Timeline", fontsize=16, pad=2)
+ax.set_xlabel("Time", labelpad=10)
 
 # Clean frame
 for spine in ["left", "right", "top"]:
     ax.spines[spine].set_visible(False)
 
 plt.tight_layout()
-plt.show()
+plt.savefig("timeline.svg", format="svg", bbox_inches="tight")
+plt.close(fig)
